@@ -2,21 +2,27 @@
 using ApiAgregator.Entities;
 using ApiAgregator.Services.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ApiAgregator.Services.APIs;
 
 public class ExternalApisService
 {
     private readonly ICronTaskRepository _cronTaskRepository;
+    private readonly IUserRepository _userRepository;
     private readonly Dictionary<string, IExternalApi> _externalApis;
     private readonly CronTaskScheduler _cronTaskScheduler;
+    private readonly ILogger<ExternalApisService> _logger;
 
-    public ExternalApisService(ICronTaskRepository cronTaskRepository, CronTaskScheduler cronTaskScheduler,
-        IEnumerable<IExternalApi> externalApis)
+    public ExternalApisService(ICronTaskRepository cronTaskRepository, IUserRepository userRepository,
+        CronTaskScheduler cronTaskScheduler, IEnumerable<IExternalApi> externalApis, 
+        ILogger<ExternalApisService> logger)
     {
         _cronTaskRepository = cronTaskRepository;
+        _userRepository = userRepository;
         _externalApis = externalApis.ToDictionary(a => a.Name);
         _cronTaskScheduler = cronTaskScheduler;
+        _logger = logger;
     }
 
     public CronTask AddTask(int userId, string apiName, string taskName, string taskDescription,
@@ -33,9 +39,10 @@ public class ExternalApisService
         var task = new CronTask(taskName, taskDescription, userId, cronExpression, apiName, parametrs);
         _cronTaskRepository.AddCronTask(task);
 
-        var apiAction = api.CreateAction(task);
+        var apiAction = api.CreateAction(_userRepository.GetById(task.OwnerId), task);
 
         _cronTaskScheduler.Set(task.Id, task.Expression, CreateAction(task));
+        _logger.LogInformation($"task {task.Name}({task.Id}) {task.Expression} set (new)");
 
         return task;
     }
@@ -59,6 +66,7 @@ public class ExternalApisService
         }
 
         _cronTaskScheduler.Set(task.Id, task.Expression, CreateAction(task));
+        _logger.LogInformation($"task {task.Name}({task.Id}) {task.Expression} set (update)");
 
         return task;
     }
@@ -66,7 +74,7 @@ public class ExternalApisService
     public Action<IServiceProvider> CreateAction(CronTask task)
     {
         var api = _externalApis[task.ApiName];
-        var apiAction = api.CreateAction(task);
+        var apiAction = api.CreateAction(_userRepository.GetById(task.OwnerId), task);
         return (serviceProvider) =>
         {
             using (var scope = serviceProvider.CreateScope())
@@ -90,6 +98,7 @@ public class ExternalApisService
         if (_cronTaskRepository.DeleteIfOwner(taskId, userId))
         {
             _cronTaskScheduler.Remove(taskId);
+            _logger.LogInformation($"task {taskId} removed");
         }
         else
         {
@@ -117,6 +126,7 @@ public class ExternalApisService
         foreach (var task in tasks)
         {
             _cronTaskScheduler.Set(task.Id, task.Expression, CreateAction(task));
+            _logger.LogInformation($"task {task.Name}({task.Id}) {task.Expression} set (start)");
         }
     }
 }

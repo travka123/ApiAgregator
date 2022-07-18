@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgregator.WebApi", "ApiA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgregator.ExternalApi.ChuckNorris", "ApiAgregator.ExternalApi.ChuckNorris\ApiAgregator.ExternalApi.ChuckNorris.csproj", "{ABF73D70-6BF2-4215-B2A8-2A7E3277DC7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAgregator.Entities.Testing", "ApiAgregator.Entities.Testing\ApiAgregator.Entities.Testing.csproj", "{EFA25F1B-2B45-4273-95A8-8314939BE1D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgregator.Entities.Testing", "ApiAgregator.Entities.Testing\ApiAgregator.Entities.Testing.csproj", "{EFA25F1B-2B45-4273-95A8-8314939BE1D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgregator.ExternalApi.WeatherApi", "ApiAgregator.ExternalApi.WeatherApi\ApiAgregator.ExternalApi.WeatherApi.csproj", "{8171D648-1A96-4B1C-BE52-82E925A6D74B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAgregator.ExternalApi.CovidApi", "ApiAgregator.ExternalApi.CovidApi\ApiAgregator.ExternalApi.CovidApi.csproj", "{F6B3E4A2-4C10-4319-A515-FEE271315662}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{EFA25F1B-2B45-4273-95A8-8314939BE1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA25F1B-2B45-4273-95A8-8314939BE1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA25F1B-2B45-4273-95A8-8314939BE1D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8171D648-1A96-4B1C-BE52-82E925A6D74B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8171D648-1A96-4B1C-BE52-82E925A6D74B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8171D648-1A96-4B1C-BE52-82E925A6D74B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8171D648-1A96-4B1C-BE52-82E925A6D74B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B3E4A2-4C10-4319-A515-FEE271315662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B3E4A2-4C10-4319-A515-FEE271315662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B3E4A2-4C10-4319-A515-FEE271315662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B3E4A2-4C10-4319-A515-FEE271315662}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,4 +8,6 @@ public interface IUserRepository
     void ConfirmEmail(string username, string email);
     User GetByUsername(string username);
     User GetById(int userId);
+    public IEnumerable<User> GetUsers();
+    IEnumerable<UserStat> GetUsersStatistics();
 }

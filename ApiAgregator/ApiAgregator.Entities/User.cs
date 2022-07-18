@@ -27,5 +27,6 @@ public class User
         EmailConfirmed = emailConfirmed;
         Password = password;
         PasswordSalt = passwordSalt;
+        IsAdmin = isAdmin;
     }
 }
