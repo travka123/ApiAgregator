@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiAgregator.Data\ApiAgregator.Data.csproj" />
+    <ProjectReference Include="..\ApiAgregator.Entities\ApiAgregator.Entities.csproj" />
+    <ProjectReference Include="..\ApiAgregator.ExternalApi.ChuckNorris\ApiAgregator.ExternalApi.ChuckNorris.csproj" />
+    <ProjectReference Include="..\ApiAgregator.ExternalApi.CovidApi\ApiAgregator.ExternalApi.CovidApi.csproj" />
+    <ProjectReference Include="..\ApiAgregator.ExternalApi.WeatherApi\ApiAgregator.ExternalApi.WeatherApi.csproj" />
+  </ItemGroup>
+
+</Project>
