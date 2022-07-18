@@ -14,8 +14,8 @@ const EmailConfirmationPage: React.FC = () => {
         if (!disabled)
         {
             setDisabled(true);
-            setTimeout(() => setDisabled(false), 25000);
             requestEmailConfirmation(account.jwt);
+            setTimeout(() => setDisabled(false), 25000);
         }
     }
 

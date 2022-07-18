@@ -44,6 +44,7 @@ const SignInPage: React.FC = () => {
                         <label className="form-label">Password</label>
                         <input {...register("password")} type="password" className="form-control" />
                     </div>
+                    {failed ? <div><h5 className="text-danger">invalid username or password</h5></div> : null}
                     <div className="mb-3">
                         <button className="btn btn-primary me-2" type="submit">sign in</button>
                         <Link className="btn btn-secondary" to='/signup'>sign up</Link>
