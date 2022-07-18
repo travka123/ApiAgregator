@@ -437,3 +437,4 @@ packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
 
 *.db
+conf.json

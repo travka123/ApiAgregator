@@ -116,7 +116,7 @@ public class CronTaskRepository : ICronTaskRepository
         return list;
     }
 
-    public void AddTaskCall(int taskId, bool IsSuccess)
+    public void AddTaskCall(int taskId, bool error)
     {
         const string expression = "INSERT INTO calls (task_id, time, error) " +
             "VALUES (@task_id, @time, @error);";
@@ -124,7 +124,7 @@ public class CronTaskRepository : ICronTaskRepository
         var sqliteCommand = new SqliteCommand(expression, _connection);
 
         sqliteCommand.Parameters.Add(new SqliteParameter("@task_id", taskId));
-        sqliteCommand.Parameters.Add(new SqliteParameter("@error", IsSuccess ? 0 : 1));
+        sqliteCommand.Parameters.Add(new SqliteParameter("@error", error ? 1 : 0));
         sqliteCommand.Parameters.Add(new SqliteParameter("@time", DateTime.UtcNow.ToString("O")));
 
         sqliteCommand.ExecuteNonQuery();

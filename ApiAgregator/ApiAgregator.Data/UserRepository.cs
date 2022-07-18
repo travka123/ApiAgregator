@@ -100,7 +100,7 @@ public class UserRepository : IUserRepository
 
             var user = new User((int)(long)reader["id"], (string)reader["username"], (string)reader["email"],
                 (long)reader["email_confirmed"] == 1, (byte[])reader["password"], (byte[])reader["password_salt"],
-                (long)reader["is_admin"] == 1);
+                (long)reader["is_admin"] == (long)1);
 
             if (reader.Read())
             {
@@ -109,5 +109,58 @@ public class UserRepository : IUserRepository
 
             return user;
         }
+    }
+
+    public IEnumerable<User> GetUsers()
+    {
+        var users = new List<User>();
+
+        const string expression = "SELECT * FROM users";
+
+        var sqliteCommand = new SqliteCommand(expression, _connection);
+
+        using (var reader = sqliteCommand.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                users.Add(new User((int)(long)reader["id"], (string)reader["username"], (string)reader["email"],
+                    (long)reader["email_confirmed"] == 1, (byte[])reader["password"], (byte[])reader["password_salt"],
+                    (long)reader["is_admin"] == 1));
+            }
+
+            return users;
+        }
+    }
+
+    public IEnumerable<UserStat> GetUsersStatistics()
+    {
+        var stats = new List<UserStat>();
+
+        const string expression = "SELECT users.id, COUNT(a_tasks.id) AS total_tasks, " +
+            "SUM(total_calls) AS total_calls, SUM(total_error_calls) AS total_error_calls " +
+            "FROM users " +
+            "LEFT JOIN ( " +
+            "SELECT tasks.id, tasks.owner_id, COUNT(calls.id) AS total_calls, SUM(calls.error) AS total_error_calls " +
+            "FROM tasks " +
+            "INNER JOIN calls ON tasks.id = calls.task_id " +
+            "GROUP BY tasks.id " +
+            ") AS a_tasks ON a_tasks.owner_id = users.id " +
+            "GROUP BY users.id;";
+
+        var sqliteCommand = new SqliteCommand(expression, _connection);
+
+        using(var reader = sqliteCommand.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                int totalCalls = reader["total_calls"] is System.DBNull ? 0 : (int)(long)reader["total_calls"];
+                int totalErrorCalls = reader["total_error_calls"] is System.DBNull ? 0 : (int)(long)reader["total_error_calls"];
+
+                stats.Add(new UserStat((int)(long)reader["id"], (int)(long)reader["total_tasks"],
+                    totalCalls, totalErrorCalls));
+            }
+        }
+
+        return stats;
     }
 }
